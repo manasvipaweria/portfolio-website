@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manasvi Paweria — Software Developer</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#f4f1ec',
+                        bgWarm: '#ebe6dd',
+                        bgDeep: '#e0d9c9',
+                        ink: '#1a1a1a',
+                        inkSoft: '#2a2a2a',
+                        muted: '#8a8275',
+                        muted2: '#b5ad9f',
+                        line: '#d8d1c4',
+                        accent: '#c1440e',
+                        accentSoft: '#e8d4c2',
+                        paper: '#faf6ec',
+                    },
+                    fontFamily: {
+                        sans: ['"Inter Tight"', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        hand: ['Caveat', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.bg');
+            color: theme('colors.ink');
+            cursor: none; /* For custom cursor */
+        }
+        
+        ::selection { background: theme('colors.accentSoft'); color: theme('colors.ink'); }
+
+        .grain {
+            position: fixed; inset: 0; pointer-events: none; z-index: 1000; opacity: 0.06; mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            position: fixed; width: 6px; height: 6px; background: theme('colors.ink'); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s;
+        }
+        .cursor-ring {
+            position: fixed; width: 32px; height: 32px; border: 1px solid theme('colors.ink'); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); opacity: 0.5; transition: width 0.4s, height 0.4s, border-color 0.3s, background 0.3s;
+        }
+        .cursor-ring.hover { width: 70px; height: 70px; border-color: theme('colors.accent'); background: rgba(193, 68, 14, 0.05); opacity: 1; }
+        @media (hover: none) and (pointer: coarse) { body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; } }
+
+        .nav-link { position: relative; display: inline-block; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: theme('colors.ink'); transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1); }
+        .nav-link:hover::after { width: 100%; }
+
+        .marquee-track { display: inline-flex; white-space: nowrap; animation: scroll 35s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes scroll { to { transform: translateX(-50%); } }
+
+        .btn-editorial { position: relative; overflow: hidden; display: inline-flex; align-items: center; border: 1px solid theme('colors.ink'); padding: 12px 24px; font-family: theme('fontFamily.mono'); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.4s; }
+        .btn-editorial::before { content: ''; position: absolute; inset: 0; background: theme('colors.ink'); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1); z-index: 0; }
+        .btn-editorial:hover::before { transform: translateY(0); }
+        .btn-editorial span { position: relative; z-index: 1; transition: color 0.4s; }
+        .btn-editorial:hover span { color: theme('colors.bg'); }
+
+        .section-header::before { content: ''; position: absolute; top: -1px; left: 0; width: 100%; height: 1px; background: theme('colors.line'); }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Custom Cursor & Grain -->
+    <div class="grain"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-8 py-6 flex justify-between items-center transition-all duration-300" style="background: rgba(244, 241, 236, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line);">
+        <a href="#" class="font-mono text-sm tracking-widest font-medium interactive">MP<span class="text-accent">.</span></a>
+        
+        <div class="hidden md:flex space-x-12 font-mono text-xs uppercase tracking-widest text-inkSoft">
+            <a href="#about" class="nav-link interactive">About</a>
+            <a href="#experience" class="nav-link interactive">Experience</a>
+            <a href="#projects" class="nav-link interactive">Projects</a>
+        </div>
+
+        <div class="flex items-center gap-2 font-mono text-xs text-muted">
+            <div class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></div>
+            <a href="#contact" class="interactive">Let's Connect</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="pt-32 relative z-10">
+        <section class="min-h-[85vh] flex flex-col justify-center px-8 md:px-16 max-w-7xl mx-auto relative">
+            <div class="font-mono text-xs text-muted tracking-widest uppercase mb-8 flex items-center gap-4">
+                <div class="w-16 h-px bg-muted2"></div>
+                Portfolio 2026
+            </div>
+            
+            <h1 class="font-serif text-[4rem] md:text-[8rem] leading-[0.9] tracking-tighter text-ink relative">
+                Manasvi <br>
+                <em class="font-light text-accent italic">Paweria.</em>
+            </h1>
+            
+            <div class="mt-16 max-w-lg font-serif italic text-xl md:text-2xl text-inkSoft leading-relaxed">
+                <span class="text-accent not-italic">※</span> 
+                I'm always open to interesting problems, collaborations, and opportunities. The best conversations usually start with a simple email — so reach out.
+            </div>
+
+            <div class="mt-12 flex gap-6">
+                <a href="#projects" class="btn-editorial interactive">
+                    <span>View Projects</span>
+                </a>
+                <a href="mailto:manasvipaweria@gmail.com" class="border-b border-ink flex items-center font-mono text-sm tracking-widest uppercase hover:text-accent hover:border-accent transition-colors interactive">
+                    Contact Me
+                </a>
+            </div>
+        </section>
+
+        <!-- Marquee -->
+        <div class="border-y border-line py-6 overflow-hidden bg-bgWarm mt-12">
+            <div class="marquee-track font-serif italic text-3xl md:text-4xl font-light text-inkSoft interactive">
+                <span>
+                    Node.js <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    Python <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    C++ <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    MongoDB <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    System Programming <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    React <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    MySQL <span class="text-accent mx-8 text-xl not-italic">•</span>
+                </span>
+                <!-- Duplicate for seamless scroll -->
+                <span>
+                    Node.js <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    Python <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    C++ <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    MongoDB <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    System Programming <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    React <span class="text-accent mx-8 text-xl not-italic">•</span> 
+                    MySQL <span class="text-accent mx-8 text-xl not-italic">•</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Experience Section -->
+        <section id="experience" class="px-8 md:px-16 max-w-7xl mx-auto py-32 relative">
+            <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-12 relative pt-8 section-header">
+                <div class="font-mono text-xs text-muted tracking-widest uppercase">
+                    01. Background
+                </div>
+                <div>
+                    <h2 class="font-serif text-5xl md:text-6xl tracking-tight mb-16">Work <em class="italic text-accent">Experience</em></h2>
+                    
+                    <div class="border-l border-line pl-8 relative">
+                        <div class="absolute w-3 h-3 bg-bg border border-accent rounded-full -left-[6px] top-2"></div>
+                        <div class="mb-2 flex flex-col md:flex-row md:justify-between md:items-baseline">
+                            <h3 class="font-serif text-2xl font-medium">Hydotech</h3>
+                            <span class="font-mono text-xs text-muted tracking-widest mt-2 md:mt-0">July 2026 — Present</span>
+                        </div>
+                        <p class="font-sans text-accent font-medium mb-6">Software Development Intern</p>
+                        
+                        <ul class="space-y-4 font-sans text-inkSoft leading-relaxed text-sm md:text-base list-none">
+                            <li class="relative before:content-['—'] before:absolute before:-left-6 before:text-accent">
+                                Developed and debugged a Node.js backend for a POS Revenue Automation application, integrating MongoDB, REST APIs, scheduled jobs, WhatsApp, and Twilio.
+                            </li>
+                            <li class="relative before:content-['—'] before:absolute before:-left-6 before:text-accent">
+                                Implemented dynamic reporting workflows supporting store-level, recipient-specific, and business-wide scopes.
+                            </li>
+                            <li class="relative before:content-['—'] before:absolute before:-left-6 before:text-accent">
+                                Improved configuration management and reliability across 3 environments using dotenv and cross-env.
+                            </li>
+                            <li class="relative before:content-['—'] before:absolute before:-left-6 before:text-accent">
+                                Integrated GitHub Actions-based automated checks across 100+ repositories for centralized code-quality/security.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="px-8 md:px-16 max-w-7xl mx-auto pb-32 relative">
+            <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-12 relative pt-8 section-header">
+                <div class="font-mono text-xs text-muted tracking-widest uppercase">
+                    02. Selected Work
+                </div>
+                <div>
+                    <h2 class="font-serif text-5xl md:text-6xl tracking-tight mb-16">Featured <em class="italic text-accent">Projects</em></h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Project 1 -->
+                        <div class="bg-paper border border-line p-8 flex flex-col interactive group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-bgWarm border-l border-b border-line flex items-center justify-center font-serif text-xl italic text-muted group-hover:text-accent transition-colors">01</div>
+                            <h3 class="font-serif text-3xl mb-4 pr-12">Custom Assembler</h3>
+                            <p class="font-sans text-inkSoft text-sm mb-8 flex-1 leading-relaxed">
+                                A two-pass assembler in Python translating assembly to binary machine code. Engineered opcode encoding, symbol tables, label resolution, and extensive error-handling for malformed instructions.
+                            </p>
+                            <div class="flex flex-wrap gap-3 font-mono text-[10px] uppercase tracking-widest text-muted">
+                                <span>[ Python ]</span>
+                                <span>[ Linux ]</span>
+                                <span>[ Systems ]</span>
+                            </div>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="bg-paper border border-line p-8 flex flex-col interactive group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-bgWarm border-l border-b border-line flex items-center justify-center font-serif text-xl italic text-muted group-hover:text-accent transition-colors">02</div>
+                            <h3 class="font-serif text-3xl mb-4 pr-12">TCP Socket Server</h3>
+                            <p class="font-sans text-inkSoft text-sm mb-8 flex-1 leading-relaxed">
+                                A multithreaded client-server architecture using POSIX sockets and pthreads. Features thread-safe request handling, buffer management, and rigorous stress testing for concurrent workloads.
+                            </p>
+                            <div class="flex flex-wrap gap-3 font-mono text-[10px] uppercase tracking-widest text-muted">
+                                <span>[ C/C++ ]</span>
+                                <span>[ POSIX ]</span>
+                                <span>[ pthreads ]</span>
+                            </div>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="bg-paper border border-line p-8 flex flex-col interactive group relative overflow-hidden md:col-span-2">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-bgWarm border-l border-b border-line flex items-center justify-center font-serif text-xl italic text-muted group-hover:text-accent transition-colors">03</div>
+                            <h3 class="font-serif text-3xl mb-4 pr-12">Inverso Matchmaking</h3>
+                            <p class="font-sans text-inkSoft text-sm mb-8 max-w-2xl leading-relaxed">
+                                Influencer brand matchmaking platform. Built REST APIs for pricing analytics, designed ML pipelines for KPI tracking, and integrated structured data workflows for core functionality.
+                            </p>
+                            <div class="flex flex-wrap gap-3 font-mono text-[10px] uppercase tracking-widest text-muted">
+                                <span>[ Node.js ]</span>
+                                <span>[ MySQL ]</span>
+                                <span>[ React ]</span>
+                                <span>[ ML Pipelines ]</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section id="about" class="px-8 md:px-16 max-w-7xl mx-auto pb-32 relative">
+            <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-12 relative pt-8 section-header">
+                <div class="font-mono text-xs text-muted tracking-widest uppercase">
+                    03. Academics
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="font-serif text-4xl tracking-tight mb-10">Education</h2>
+                        <div class="mb-8 border-b border-line pb-8">
+                            <h3 class="font-serif text-xl mb-1">Guru Gobind Singh Indraprastha University</h3>
+                            <p class="font-sans text-accent text-sm mb-3">B.Tech in Computer Science (2025 - 2029)</p>
+                            <p class="font-mono text-xs text-inkSoft">CGPA: 8.8</p>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-xl mb-1">Vishwa Bharati Public School</h3>
+                            <p class="font-sans text-accent text-sm mb-3">CBSE Board (2022 - 2024)</p>
+                            <p class="font-mono text-xs text-inkSoft">Class XII: 84% &nbsp;|&nbsp; Class X: 92%</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-serif text-4xl tracking-tight mb-10">Honors</h2>
+                        <ul class="space-y-6">
+                            <li class="flex gap-4 items-start">
+                                <span class="font-serif italic text-accent text-2xl leading-none">*</span>
+                                <div>
+                                    <h4 class="font-sans font-medium text-ink">Top 1% Academic Performer</h4>
+                                    <p class="font-serif text-inkSoft text-sm mt-1">Recognized for outstanding academic excellence.</p>
+                                </div>
+                            </li>
+                            <li class="flex gap-4 items-start">
+                                <span class="font-serif italic text-accent text-2xl leading-none">*</span>
+                                <div>
+                                    <h4 class="font-sans font-medium text-ink">Bronze Medalist</h4>
+                                    <p class="font-serif text-inkSoft text-sm mt-1">Mathematics Olympiad.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="bg-ink text-bg px-8 md:px-16 py-32 text-center relative overflow-hidden">
+            <div class="grain mix-blend-overlay opacity-10"></div>
+            <div class="max-w-4xl mx-auto relative z-10">
+                <p class="font-mono text-xs text-muted2 tracking-widest uppercase mb-6">Let's create something</p>
+                <h2 class="font-serif text-6xl md:text-[8rem] leading-none tracking-tight mb-12">
+                    Say <em class="italic text-accent font-light">Hello.</em>
+                </h2>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-16">
+                    <a href="mailto:manasvipaweria@gmail.com" class="font-sans text-lg md:text-2xl border-b border-muted2 pb-1 hover:text-accent hover:border-accent transition-colors interactive">
+                        manasvipaweria@gmail.com
+                    </a>
+                    <span class="hidden md:block text-muted2">/</span>
+                    <a href="tel:+919266803942" class="font-sans text-lg md:text-2xl border-b border-muted2 pb-1 hover:text-accent hover:border-accent transition-colors interactive">
+                        +91-9266803942
+                    </a>
+                </div>
+
+                <div class="flex justify-center gap-8 font-mono text-xs uppercase tracking-widest text-muted2">
+                    <a href="https://linkedin.com/in/manasvipaweria" class="hover:text-accent transition-colors interactive">LinkedIn</a>
+                    <a href="https://github.com/manasvipaweria" class="hover:text-accent transition-colors interactive">GitHub</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-ink text-muted py-8 text-center font-mono text-[10px] uppercase tracking-widest border-t border-inkSoft">
+        © 2026 Manasvi Paweria — Editorial Theme
+    </footer>
+
+    <!-- Custom Cursor Script -->
+    <script>
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        });
+
+        const loop = () => {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+            requestAnimationFrame(loop);
+        };
+        loop();
+
+        document.querySelectorAll('.interactive, a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                ring.classList.add('hover');
+                dot.style.opacity = '0';
+            });
+            el.addEventListener('mouseleave', () => {
+                ring.classList.remove('hover');
+                dot.style.opacity = '1';
+            });
+        });
+    </script>
+</body>
+</html>
